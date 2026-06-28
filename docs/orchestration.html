@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Orchestration Station — Custom Assistants, built for how you actually work</title>
+<meta name="description" content="Agent Assist is ancient — so 2025. We design and orchestrate Custom Assistants: AI that knows your business, calls your tools, and gets real work done. Not a chatbot. A station.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:title" content="AI Orchestration Station">
+<meta property="og:description" content="Agent Assist is ancient. We build Custom Assistants — orchestrated AI that runs your work.">
+<meta property="og:type" content="website">
+
+<!-- No-flash theme: default DARK for this one (control-room feel) -->
+<script>(function(){try{var t=localStorage.getItem('aos-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ THEME ============ */
+  :root {
+    --bg:        #f7f1e8;
+    --bg-deep:   #efe6d8;
+    --panel:     #fffaf2;
+    --panel-2:   #fbf4e9;
+    --panel-3:   #f3e8d7;
+    --line:      rgba(74, 50, 26, 0.13);
+    --line-soft: rgba(74, 50, 26, 0.07);
+    --text:      #2c2117;
+    --muted:     #6d5f4e;
+    --faint:     #9a8b76;
+    --coral:     #cb6336;
+    --coral-br:  #d9764a;
+    --coral-deep:#b1521f;
+    --amber:     #c2872c;
+    --sage:      #5d9069;
+    --violet:    #7d5cf6;
+    --cyan:      #1f9bb8;
+    --nav-bg:    linear-gradient(to bottom, rgba(247,241,232,0.88), rgba(247,241,232,0.45));
+    --ghost-bg:  rgba(74,50,26,0.05);
+    --ghost-hov: rgba(74,50,26,0.10);
+    --card-shadow: 0 26px 54px -28px rgba(90,58,28,0.30);
+    --hover-shadow:0 24px 50px -24px rgba(90,58,28,0.32);
+    --grain-op:  0.05;
+
+    --display: 'Fraunces', Georgia, serif;
+    --sans: 'Hanken Grotesk', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --maxw: 1180px;
+  }
+  :root[data-theme="dark"] {
+    --bg:        #14100c;
+    --bg-deep:   #0d0a07;
+    --panel:     #1e1813;
+    --panel-2:   #261e17;
+    --panel-3:   #2f261d;
+    --line:      rgba(255, 238, 224, 0.09);
+    --line-soft: rgba(255, 238, 224, 0.05);
+    --text:      #f3ece3;
+    --muted:     #ab9b8b;
+    --faint:     #7c6f62;
+    --coral:     #e2825b;
+    --coral-br:  #f29a72;
+    --coral-deep:#c9633b;
+    --amber:     #e9b063;
+    --sage:      #8bb691;
+    --violet:    #b6a4ff;
+    --cyan:      #5fd0e6;
+    --nav-bg:    linear-gradient(to bottom, rgba(20,16,12,0.82), rgba(20,16,12,0.35));
+    --ghost-bg:  rgba(255,238,224,0.04);
+    --ghost-hov: rgba(255,238,224,0.08);
+    --card-shadow: 0 24px 50px -24px rgba(0,0,0,0.6);
+    --hover-shadow:0 24px 50px -24px rgba(0,0,0,0.6);
+    --grain-op:  0.035;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 17px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: -2;
+    background:
+      radial-gradient(680px 540px at 80% -8%, rgba(125,92,246,0.16), transparent 60%),
+      radial-gradient(720px 620px at 6% 6%, rgba(216,118,74,0.15), transparent 55%),
+      radial-gradient(900px 700px at 50% 116%, rgba(31,155,184,0.12), transparent 60%),
+      var(--bg);
+    transition: background 0.4s ease;
+  }
+  :root[data-theme="dark"] body::before {
+    background:
+      radial-gradient(680px 540px at 80% -8%, rgba(150,120,255,0.20), transparent 60%),
+      radial-gradient(720px 620px at 6% 6%, rgba(226,130,91,0.16), transparent 55%),
+      radial-gradient(900px 700px at 50% 116%, rgba(95,208,230,0.12), transparent 60%),
+      var(--bg);
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    opacity: var(--grain-op);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: rgba(125,92,246,0.32); color: #fff; }
+  .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Nav ---------- */
+  nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); background: var(--nav-bg); border-bottom: 1px solid var(--line-soft); transition: background 0.4s ease; }
+  .nav-in { max-width: var(--maxw); margin: 0 auto; padding: 13px 28px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 600; letter-spacing: -0.01em; }
+  .brand .mark { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: linear-gradient(150deg, var(--coral-br), var(--violet)); color: #fff; font-family: var(--display); font-weight: 700; font-size: 17px; box-shadow: 0 4px 16px rgba(125,92,246,0.4); }
+  .brand b { font-weight: 600; font-size: 16px; }
+  .brand .sub { color: var(--faint); font-size: 11px; font-family: var(--mono); letter-spacing: 0.04em; display: block; margin-top: -3px; }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a.lnk { color: var(--muted); font-size: 14.5px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a.lnk:hover { color: var(--text); }
+  @media (max-width: 860px) { .nav-links .lnk { display: none; } }
+
+  .toggle {
+    width: 38px; height: 38px; border-radius: 11px; border: 1px solid var(--line);
+    background: var(--ghost-bg); color: var(--text); cursor: pointer; display: grid; place-items: center;
+    transition: background 0.2s, transform 0.2s, border-color 0.2s;
+  }
+  .toggle:hover { background: var(--ghost-hov); transform: translateY(-1px); border-color: rgba(125,92,246,0.45); }
+  .toggle .i-sun { display: none; } .toggle .i-moon { display: block; }
+  :root[data-theme="dark"] .toggle .i-sun { display: block; } :root[data-theme="dark"] .toggle .i-moon { display: none; }
+
+  .btn { display: inline-flex; align-items: center; gap: 9px; font-family: var(--sans); font-weight: 600; font-size: 15px; padding: 11px 20px; border-radius: 11px; cursor: pointer; border: 1px solid transparent; transition: transform 0.18s, box-shadow 0.25s, background 0.2s; }
+  .btn-primary { background: linear-gradient(135deg, var(--coral-br), var(--violet)); color: #fff6ef; box-shadow: 0 8px 26px -6px rgba(125,92,246,0.5), inset 0 1px 0 rgba(255,255,255,0.25); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -8px rgba(125,92,246,0.62), inset 0 1px 0 rgba(255,255,255,0.28); }
+  .btn-ghost { background: var(--ghost-bg); color: var(--text); border-color: var(--line); }
+  .btn-ghost:hover { background: var(--ghost-hov); transform: translateY(-2px); }
+  .btn-sm { padding: 8px 15px; font-size: 13.5px; border-radius: 9px; }
+  .btn-xl { padding: 16px 30px; font-size: 17px; border-radius: 14px; }
+
+  /* ---------- Hero ---------- */
+  header.hero { position: relative; padding: 64px 0 24px; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 50px; align-items: center; }
+  @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; gap: 44px; } }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--violet); background: rgba(125,92,246,0.12); border: 1px solid rgba(125,92,246,0.3); border-radius: 100px; padding: 6px 14px; }
+  .eyebrow .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 0 0 rgba(125,92,246,0.55); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(125,92,246,0.5);} 70%{box-shadow:0 0 0 9px rgba(125,92,246,0);} 100%{box-shadow:0 0 0 0 rgba(125,92,246,0);} }
+
+  h1 { font-family: var(--display); font-weight: 540; font-size: clamp(40px, 5.6vw, 70px); line-height: 1.0; letter-spacing: -0.02em; margin: 22px 0 0; font-variation-settings: 'opsz' 144, 'SOFT' 0, 'WONK' 1; }
+  h1 .strike { position: relative; white-space: nowrap; color: var(--faint); }
+  h1 .strike::after { content:''; position:absolute; left:-2%; right:-2%; top:54%; height:4px; border-radius:4px; background: var(--coral); transform: rotate(-2.5deg); box-shadow: 0 0 18px rgba(216,118,74,0.5); }
+  h1 .accent { font-style: italic; color: var(--coral-deep); }
+  :root[data-theme="dark"] h1 .accent { color: var(--coral-br); }
+  h1 .grad { background: linear-gradient(100deg, var(--coral-br), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; font-style: italic; }
+  .lede { color: var(--muted); font-size: 19px; line-height: 1.62; margin: 24px 0 0; max-width: 46ch; }
+  .lede b { color: var(--text); font-weight: 600; }
+  .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
+  .meta-line { margin-top: 18px; color: var(--faint); font-size: 13.5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .meta-line .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--faint); }
+
+  .intro { opacity: 0; transform: translateY(18px); animation: rise 0.9s cubic-bezier(.2,.7,.2,1) forwards; }
+  .d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.27s}.d4{animation-delay:.39s}.d5{animation-delay:.5s}
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* ---------- Orchestration console (hero visual) ---------- */
+  .console { position: relative; border-radius: 22px; overflow: hidden; padding: 26px 24px 24px;
+    background:
+      radial-gradient(75% 65% at 20% 0%, rgba(125,92,246,0.28), transparent 60%),
+      radial-gradient(70% 60% at 88% 12%, rgba(226,130,91,0.22), transparent 60%),
+      radial-gradient(85% 80% at 60% 118%, rgba(31,155,184,0.20), transparent 62%),
+      linear-gradient(160deg, #120e1f, #0c0a14 72%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 50px 120px -44px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06); }
+  .console::before { content:''; position:absolute; inset:0; z-index:0; opacity:.5;
+    background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 34px 34px;
+    -webkit-mask: radial-gradient(125% 100% at 50% 0%, #000 35%, transparent 100%); mask: radial-gradient(125% 100% at 50% 0%, #000 35%, transparent 100%); }
+  .con-bar { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .con-bar .ttl { display: flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 12px; color: #cdd6e6; }
+  .con-bar .ttl .dotcl { display:flex; gap:5px; }
+  .con-bar .ttl .dotcl i { width:9px; height:9px; border-radius:50%; display:block; }
+  .con-bar .live { font-family: var(--mono); font-size: 11px; color: #7fe0b0; display:flex; align-items:center; gap:6px; }
+  .con-bar .live .ld { width:7px; height:7px; border-radius:50%; background:#4ed99a; box-shadow:0 0 9px #4ed99a; animation: ledpulse 1.8s ease-in-out infinite; }
+  @keyframes ledpulse { 0%,100%{opacity:.65} 50%{opacity:1} }
+
+  .orch { position: relative; z-index: 1; height: 360px; }
+  .orch svg.wires { position:absolute; inset:0; width:100%; height:100%; z-index:1; overflow:visible; }
+  .orch .dash { stroke-dasharray: 5 7; animation: flow 1.1s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -24; } }
+  .conductor { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:3; width:128px; height:128px; border-radius:50%;
+    display:grid; place-items:center; text-align:center;
+    background: radial-gradient(circle at 40% 30%, rgba(150,120,255,0.5), rgba(125,92,246,0.18));
+    border:1px solid rgba(182,164,255,0.55);
+    box-shadow: 0 0 0 8px rgba(125,92,246,0.08), 0 0 50px rgba(125,92,246,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+    animation: corepulse 3.6s ease-in-out infinite; }
+  @keyframes corepulse { 0%,100%{box-shadow:0 0 0 8px rgba(125,92,246,0.08), 0 0 44px rgba(125,92,246,0.45);} 50%{box-shadow:0 0 0 16px rgba(125,92,246,0.04), 0 0 64px rgba(125,92,246,0.7);} }
+  .conductor b { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 17px; color:#fff; line-height:1.1; }
+  .conductor span { font-family: var(--mono); font-size: 9.5px; color:#d9d2ff; letter-spacing:0.06em; text-transform:uppercase; margin-top:3px; }
+
+  .agent { position:absolute; z-index:3; transform: translate(-50%,-50%); display:flex; align-items:center; gap:8px;
+    font-family: var(--mono); font-size: 11.5px; color:#eef1fb; white-space:nowrap;
+    background: rgba(22,20,34,0.82); border:1px solid rgba(255,255,255,0.12); padding:8px 12px; border-radius:11px;
+    box-shadow: 0 12px 30px -12px rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    animation: bob 6s ease-in-out infinite; }
+  .agent .ico { width:22px; height:22px; border-radius:7px; display:grid; place-items:center; font-size:12px; flex-shrink:0; }
+  .agent .led { width:6px; height:6px; border-radius:50%; background:var(--sage); box-shadow:0 0 8px var(--sage); }
+  @keyframes bob { 0%,100%{transform:translate(-50%,-50%)} 50%{transform:translate(-50%,calc(-50% - 7px))} }
+  .agent.a1{ left:16%; top:16%; } .agent.a2{ left:84%; top:18%; animation-delay:.7s; }
+  .agent.a3{ left:9%;  top:54%; animation-delay:1.4s; } .agent.a4{ left:90%; top:56%; animation-delay:2.1s; }
+  .agent.a5{ left:27%; top:88%; animation-delay:2.8s; } .agent.a6{ left:74%; top:87%; animation-delay:3.5s; }
+  @media (max-width: 420px){ .agent { font-size:10.5px; padding:6px 9px; } .orch{ height:320px; } }
+
+  /* ---------- Sections ---------- */
+  section.band { padding: 84px 0; position: relative; }
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); }
+  h2 { font-family: var(--display); font-weight: 560; font-size: clamp(30px, 4vw, 47px); line-height: 1.06; letter-spacing: -0.016em; margin: 12px 0 0; font-variation-settings: 'opsz' 80, 'WONK' 1; }
+  h2 em { font-style: italic; color: var(--coral-deep); }
+  :root[data-theme="dark"] h2 em { color: var(--coral-br); }
+  .section-lede { color: var(--muted); font-size: 18px; max-width: 60ch; margin: 16px 0 0; }
+
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.8s cubic-bezier(.2,.7,.2,1), transform 0.8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- Then vs Now comparison ---------- */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 44px; }
+  @media (max-width: 760px){ .vs { grid-template-columns: 1fr; } }
+  .vs-card { position: relative; border-radius: 18px; padding: 28px 26px 26px; border: 1px solid var(--line); background: linear-gradient(180deg, var(--panel-2), var(--panel)); overflow: hidden; }
+  .vs-card.old { opacity: 0.92; }
+  .vs-card.old::after { content:'circa 2019'; position:absolute; top:16px; right:18px; font-family: var(--mono); font-size:10.5px; letter-spacing:0.05em; text-transform:uppercase; color: var(--faint); border:1px solid var(--line); padding:3px 9px; border-radius:100px; }
+  .vs-card.new { border-color: rgba(125,92,246,0.4); box-shadow: 0 0 0 1px rgba(125,92,246,0.12), var(--card-shadow); }
+  .vs-card.new::after { content:'2026 →'; position:absolute; top:16px; right:18px; font-family: var(--mono); font-size:10.5px; letter-spacing:0.05em; text-transform:uppercase; color:#fff; background: linear-gradient(135deg, var(--coral-br), var(--violet)); padding:3px 9px; border-radius:100px; }
+  .vs-card h3 { font-family: var(--display); font-size: 24px; font-weight: 600; margin: 0 0 4px; letter-spacing:-0.01em; }
+  .vs-card .tag { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+  .vs-card.new .tag { color: var(--violet); }
+  .vs-list { list-style: none; margin: 18px 0 0; padding: 0; }
+  .vs-list li { display: flex; gap: 11px; align-items: flex-start; padding: 8px 0; font-size: 15px; color: var(--muted); border-top: 1px solid var(--line-soft); }
+  .vs-list li:first-child { border-top: none; }
+  .vs-list li .mk { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; font-size: 12px; font-weight: 700; margin-top: 1px; }
+  .vs-card.old .mk { background: rgba(155,139,118,0.16); color: var(--faint); }
+  .vs-card.new .mk { background: rgba(93,144,105,0.18); color: var(--sage); border: 1px solid rgba(93,144,105,0.35); }
+  .vs-card.new .vs-list li b { color: var(--text); font-weight: 600; }
+
+  /* ---------- Feature cards ---------- */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
+  @media (max-width: 860px){ .features { grid-template-columns: 1fr; } }
+  .card { position: relative; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 16px; padding: 26px 26px 28px; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+  .card:hover { transform: translateY(-4px); border-color: rgba(125,92,246,0.4); box-shadow: var(--hover-shadow); }
+  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background: linear-gradient(90deg, transparent, rgba(125,92,246,0.55), transparent); opacity:0; transition: opacity .3s; }
+  .card:hover::before { opacity: 1; }
+  .card .ic { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; background: rgba(125,92,246,0.12); border: 1px solid rgba(125,92,246,0.24); margin-bottom: 18px; }
+  .card h3 { font-family: var(--display); font-size: 21px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .card p { color: var(--muted); font-size: 15.5px; margin: 0; line-height: 1.6; }
+
+  /* ---------- How it works steps ---------- */
+  .steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 44px; }
+  @media (max-width: 860px){ .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px){ .steps { grid-template-columns: 1fr; } }
+  .step { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px; box-shadow: var(--card-shadow); }
+  .step .num { font-family: var(--display); font-size: 32px; font-weight: 600; color: var(--coral-deep); line-height: 1; font-variation-settings:'WONK' 1; }
+  :root[data-theme="dark"] .step .num { color: var(--coral-br); }
+  .step h4 { font-size: 17px; margin: 12px 0 6px; font-weight: 600; }
+  .step p { color: var(--muted); font-size: 14.5px; margin: 0; }
+
+  /* ---------- Use-case chips ---------- */
+  .uses { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; margin-top: 42px; }
+  @media (max-width: 760px){ .uses { grid-template-columns: 1fr; } }
+  .use { display: flex; gap: 16px; align-items: flex-start; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 14px; padding: 20px; transition: transform .25s, border-color .25s, box-shadow .25s; }
+  .use:hover { transform: translateY(-3px); border-color: rgba(125,92,246,0.4); box-shadow: var(--hover-shadow); }
+  .use .em { font-size: 26px; flex-shrink: 0; line-height: 1; }
+  .use h4 { font-family: var(--display); font-size: 18px; font-weight: 600; margin: 0 0 4px; letter-spacing:-0.01em; }
+  .use p { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+
+  /* ---------- CTA ---------- */
+  .cta-band { margin-top: 20px; text-align: center; position: relative; padding: 58px 28px; border-radius: 24px; overflow: hidden;
+    background: radial-gradient(120% 170% at 50% -20%, rgba(125,92,246,0.2), transparent 60%), linear-gradient(180deg, var(--panel-2), var(--panel));
+    border: 1px solid rgba(125,92,246,0.3); box-shadow: var(--card-shadow); }
+  .cta-band h3 { font-family: var(--display); font-size: clamp(27px, 4vw, 42px); font-weight: 560; margin: 0 0 12px; letter-spacing: -0.015em; font-variation-settings:'WONK' 1; }
+  .cta-band p { color: var(--muted); margin: 0 auto 28px; max-width: 50ch; }
+
+  footer { border-top: 1px solid var(--line-soft); padding: 40px 0 60px; margin-top: 50px; }
+  .foot-in { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  .foot-links { display: flex; gap: 22px; font-size: 14px; color: var(--muted); }
+  .foot-links a:hover { color: var(--text); }
+  .made-by { margin-top: 22px; font-size: 14px; color: var(--faint); max-width: 70ch; line-height: 1.6; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.1ms !important; }
+    .intro, .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#top">
+      <span class="mark">◆</span>
+      <span><b>AI Orchestration Station</b><span class="sub">custom assistants</span></span>
+    </a>
+    <div class="nav-links">
+      <a class="lnk" href="#why">Why now</a>
+      <a class="lnk" href="#build">What we build</a>
+      <a class="lnk" href="#how">How it works</a>
+      <a class="lnk" href="#uses">Use cases</a>
+      <button class="toggle" id="themeToggle" aria-label="Toggle light / dark">
+        <svg class="i-moon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <svg class="i-sun" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="#contact">Book a build</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow intro d1"><span class="pulse"></span> AI Orchestration Station</span>
+        <h1 class="intro d2"><span class="strike">Agent Assist</span> is ancient.<br><span class="accent">So 2025.</span> We build <span class="grad">Custom Assistants.</span></h1>
+        <p class="lede intro d3">Off-the-shelf "agent assist" bolts a chatbot onto yesterday's workflow. We do the opposite — we <b>orchestrate assistants around your business</b>: they know your data, call your tools, and carry the work from first message to done.</p>
+        <div class="cta-row intro d4">
+          <a class="btn btn-primary btn-xl" href="#contact">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Book a build session
+          </a>
+          <a class="btn btn-ghost btn-xl" href="#build">See what we build ↓</a>
+        </div>
+        <div class="meta-line intro d5">
+          <span>Built on the latest Claude models</span><span class="dot"></span>
+          <span>Your tools, your data</span><span class="dot"></span>
+          <span>Live in weeks, not quarters</span>
+        </div>
+      </div>
+
+      <!-- Orchestration console visual -->
+      <div class="console intro d3" aria-hidden="true">
+        <div class="con-bar">
+          <div class="ttl"><span class="dotcl"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span> orchestration-station</div>
+          <div class="live"><span class="ld"></span> 6 assistants online</div>
+        </div>
+        <div class="orch" id="orch">
+          <svg class="wires" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <g stroke="rgba(182,164,255,0.45)" stroke-width="0.5" fill="none">
+              <path class="dash" d="M50,50 L16,16"/>
+              <path class="dash" style="animation-delay:.2s" d="M50,50 L84,18"/>
+              <path class="dash" style="animation-delay:.4s" d="M50,50 L9,54"/>
+              <path class="dash" style="animation-delay:.6s" d="M50,50 L90,56"/>
+              <path class="dash" style="animation-delay:.8s" d="M50,50 L27,88"/>
+              <path class="dash" style="animation-delay:1s" d="M50,50 L74,87"/>
+            </g>
+          </svg>
+          <div class="conductor"><div><b>Orchestrator</b><span>routing</span></div></div>
+          <div class="agent a1"><span class="ico" style="background:rgba(226,130,91,0.25)">📥</span> Intake <span class="led"></span></div>
+          <div class="agent a2"><span class="ico" style="background:rgba(95,208,230,0.22)">🔎</span> Research <span class="led"></span></div>
+          <div class="agent a3"><span class="ico" style="background:rgba(125,92,246,0.25)">🧰</span> Tools / API <span class="led"></span></div>
+          <div class="agent a4"><span class="ico" style="background:rgba(233,176,99,0.22)">🗂️</span> Knowledge <span class="led"></span></div>
+          <div class="agent a5"><span class="ico" style="background:rgba(139,182,145,0.22)">✍️</span> Drafting <span class="led"></span></div>
+          <div class="agent a6"><span class="ico" style="background:rgba(226,130,91,0.22)">✅</span> Review <span class="led"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ WHY NOW ============ -->
+<section class="band" id="why">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Why the old playbook is done</span>
+      <h2>"Agent Assist" was a <em>suggestion box</em>. This is a <em>workforce</em>.</h2>
+      <p class="section-lede">The 2019-era pattern dropped a generic assistant beside a human and called it transformation. Custom Assistants don't sit beside the work — they do it, end to end, inside the systems you already run.</p>
+    </div>
+
+    <div class="vs">
+      <div class="vs-card old reveal">
+        <h3>Agent Assist</h3>
+        <span class="tag">the old way</span>
+        <ul class="vs-list">
+          <li><span class="mk">✕</span> Generic model that doesn't know your business</li>
+          <li><span class="mk">✕</span> Suggests replies — a human still does everything</li>
+          <li><span class="mk">✕</span> Can't touch your tools, CRM, or data</li>
+          <li><span class="mk">✕</span> One bot, one trick, one window</li>
+          <li><span class="mk">✕</span> Forgets the moment the chat ends</li>
+        </ul>
+      </div>
+      <div class="vs-card new reveal">
+        <h3>Custom Assistants</h3>
+        <span class="tag">what we build</span>
+        <ul class="vs-list">
+          <li><span class="mk">✓</span> <b>Trained on your context</b> — your docs, voice, and rules</li>
+          <li><span class="mk">✓</span> <b>Completes the task</b>, not just the suggestion</li>
+          <li><span class="mk">✓</span> <b>Calls your tools</b> — APIs, CRM, calendars, databases</li>
+          <li><span class="mk">✓</span> <b>Many specialists, orchestrated</b> behind one front door</li>
+          <li><span class="mk">✓</span> <b>Remembers</b> across sessions and hand-offs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT WE BUILD ============ -->
+<section class="band" id="build">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">What we build</span>
+      <h2>Assistants that <em>act</em> — wired into the work.</h2>
+      <p class="section-lede">Every build is custom, but it's made of the same dependable parts. We assemble them around your process instead of forcing your process around a product.</p>
+    </div>
+
+    <div class="features">
+      <div class="card reveal">
+        <div class="ic">🧠</div>
+        <h3>Knows your business</h3>
+        <p>We ground the assistant in your documents, policies, product, and tone — so answers are yours, not a generic model's best guess.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic">🧰</div>
+        <h3>Connected to your tools</h3>
+        <p>CRM, calendars, email, databases, internal APIs. The assistant reads and writes where the real work lives — securely, with permissions.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic">🎻</div>
+        <h3>Orchestrated, not solo</h3>
+        <p>A conductor routes each request to the right specialist — intake, research, drafting, review — then composes one clean result.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic">🗂️</div>
+        <h3>Persistent memory</h3>
+        <p>Context carries across sessions and hand-offs. Pick up exactly where things left off — no re-explaining every morning.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic">🛡️</div>
+        <h3>Guardrails &amp; review</h3>
+        <p>Approvals, escalation paths, and a review step before anything ships. The assistant is bold where it's safe and cautious where it counts.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic">📈</div>
+        <h3>Built to measure</h3>
+        <p>Every run is logged and traceable, so you can see what worked, tune it, and prove the ROI to whoever signs the cheque.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">How a build goes</span>
+      <h2>From "we have a problem" to a <em>working assistant</em>.</h2>
+      <p class="section-lede">No six-month discovery deck. We map the workflow, build the smallest thing that proves it, then orchestrate outward.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="num">1</div>
+        <h4>Map the work</h4>
+        <p>We sit with the actual process — the messy parts included — and find where an assistant earns its keep.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">2</div>
+        <h4>Wire it up</h4>
+        <p>We connect your tools and data, then stand up the first specialist assistant against a real task.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">3</div>
+        <h4>Orchestrate</h4>
+        <p>Add specialists and a conductor to route between them — one front door, many hands behind it.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">4</div>
+        <h4>Hand off &amp; tune</h4>
+        <p>You run it. We watch the logs, sand the edges, and expand to the next workflow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USE CASES ============ -->
+<section class="band" id="uses">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Where it lands</span>
+      <h2>A station for <em>whatever you run on repeat</em>.</h2>
+      <p class="section-lede">If it's repetitive, rule-bound, and eats your team's hours, it's a candidate. A few places Custom Assistants pay off fast:</p>
+    </div>
+
+    <div class="uses">
+      <div class="use reveal"><span class="em">📨</span><div><h4>Customer support that resolves</h4><p>Triages, pulls account context, drafts the answer, and closes the loop — escalating only what truly needs a human.</p></div></div>
+      <div class="use reveal"><span class="em">📅</span><div><h4>Booking &amp; scheduling</h4><p>Checks real availability, proposes slots, books it, and follows up — straight into your calendar system.</p></div></div>
+      <div class="use reveal"><span class="em">📊</span><div><h4>Back-office operations</h4><p>Reconciles, files, and updates records across tools so nobody's copy-pasting between five tabs at 6pm.</p></div></div>
+      <div class="use reveal"><span class="em">🔍</span><div><h4>Research &amp; reporting</h4><p>Gathers from your sources, verifies, and writes the brief in your house style — cited and ready to send.</p></div></div>
+      <div class="use reveal"><span class="em">📝</span><div><h4>Sales &amp; intake</h4><p>Qualifies leads, answers product questions from your real docs, and hands warm context to the team.</p></div></div>
+      <div class="use reveal"><span class="em">⚙️</span><div><h4>Internal "ask-anything"</h4><p>One assistant your whole team can ask — wired to the wiki, the policies, and the systems that hold the answers.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="band" id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <h3>Let's retire your "agent assist."</h3>
+      <p>Tell us the workflow that's eating your team's week. We'll show you the Custom Assistant that handles it — and what it takes to stand one up.</p>
+      <div class="cta-row" style="justify-content:center">
+        <a class="btn btn-primary btn-xl" href="mailto:keithblanco@gmail.com?subject=AI%20Orchestration%20Station%20%E2%80%94%20build%20inquiry">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4zM4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Start the conversation
+        </a>
+        <a class="btn btn-ghost btn-xl" href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <a class="brand" href="#top"><span class="mark">◆</span><span><b>AI Orchestration Station</b><span class="sub">custom assistants</span></span></a>
+      <div class="foot-links">
+        <a href="#why">Why now</a>
+        <a href="#build">What we build</a>
+        <a href="#how">How it works</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <p class="made-by">We design, build, and orchestrate Custom Assistants on the latest Claude models — wired into your tools and grounded in your data. Not a chatbot bolted onto an old workflow. A station that runs the work.</p>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle (persisted under its own key so it won't clash with the dashboard site)
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('aos-theme', next); } catch (e) {}
+    });
+  })();
+
+  // Reveal-on-scroll
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(function (e){ e.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (e, i) { e.style.transitionDelay = (Math.min(i % 4, 3) * 0.07) + 's'; io.observe(e); });
+  })();
+</script>
+</body>
+</html>
