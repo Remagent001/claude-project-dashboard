@@ -34,12 +34,31 @@ detection so you never post the same reply twice.
 
 - **Next.js** (App Router) + **TypeScript**
 - **Tailwind CSS**
-- **SQLite** via **Prisma ORM**
+- **Postgres** via **Prisma ORM**
 - Server-side API routes (API keys never touch the browser)
 
 ---
 
-## Getting started
+## Put it online (get a clickable link)
+
+Non-technical? The easiest way to actually use this is to publish it to the web
+with **Vercel** (free) and get a URL you can open anywhere.
+
+👉 **See [DEPLOY.md](./DEPLOY.md) for a plain-English, click-by-click guide.**
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
+> When importing, set the **Root Directory** to `reviewreply-pro` and add a
+> **Postgres** store — Vercel wires up the database connection for you.
+
+---
+
+## Getting started (local development)
+
+> Prefer a live link instead? Skip this and follow [DEPLOY.md](./DEPLOY.md).
+
+You'll need a Postgres database. The quickest free option is a
+[Neon](https://neon.tech) database — create one and copy its connection string.
 
 From this `reviewreply-pro/` directory:
 
@@ -49,16 +68,17 @@ npm install
 
 # 2. Configure environment
 cp .env.example .env
-#    Then open .env and paste your API key where marked:
-#      ANTHROPIC_API_KEY="..."   (and AI_PROVIDER="anthropic")
-#      — or —
-#      OPENAI_API_KEY="..."      (and AI_PROVIDER="openai")
-#    Leave both blank to run the offline template generator.
+#    Then open .env and set BOTH Postgres URLs to your connection string
+#    (they can be identical locally):
+#      POSTGRES_PRISMA_URL="postgresql://…"
+#      POSTGRES_URL_NON_POOLING="postgresql://…"
+#    Optionally paste an AI key where marked (or leave blank for the
+#    offline template generator).
 
-# 3. Create the database and generate the Prisma client
-npx prisma migrate dev --name init
+# 3. Create the database tables + generate the Prisma client
+npm run db:push
 
-# 4. (Optional) Seed default brand settings
+# 4. (Optional) Seed default brand settings (also auto-created on first use)
 npm run db:seed
 
 # 5. Run the app
@@ -125,7 +145,7 @@ The model is asked to return strict JSON:
 ## Security & privacy
 
 - API keys live only in `.env` and are used **server-side**; no keys in frontend code.
-- Only the data needed for drafting and duplicate detection is stored (local SQLite).
+- Only the data needed for drafting and duplicate detection is stored (Postgres).
 - **Delete** individual history items or **Clear all** at any time.
 - **Export** your history as CSV.
 - Every screen carries the disclaimer: *"Review responses should be reviewed

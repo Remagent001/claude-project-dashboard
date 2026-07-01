@@ -1,13 +1,19 @@
 // ReviewReply Pro — data model
-// SQLite via Prisma. Run: npx prisma migrate dev
+// Postgres via Prisma. Create tables with: npm run db:push
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  // Pooled connection used at runtime. On Vercel Postgres this env var is
+  // provided automatically. For local dev, point it at any Postgres instance.
+  url      = env("POSTGRES_PRISMA_URL")
+  // Direct (non-pooled) connection used for schema migrations / db push.
+  // Vercel Postgres provides this automatically; falls back to the pooled URL
+  // for hosts that don't distinguish the two.
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 // A customer review pasted into the app, plus the settings selected for it.

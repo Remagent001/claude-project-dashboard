@@ -16,13 +16,14 @@ export async function GET(req: NextRequest) {
     responses: { some: { OR: [{ saved: true }, { copied: true }] } },
   };
   if (q) {
+    const ci = { contains: q, mode: "insensitive" } as const;
     where.OR = [
-      { reviewText: { contains: q } },
-      { customerName: { contains: q } },
-      { staffName: { contains: q } },
-      { serviceType: { contains: q } },
-      { location: { contains: q } },
-      { responses: { some: { responseText: { contains: q } } } },
+      { reviewText: ci },
+      { customerName: ci },
+      { staffName: ci },
+      { serviceType: ci },
+      { location: ci },
+      { responses: { some: { responseText: ci } } },
     ];
   }
 
