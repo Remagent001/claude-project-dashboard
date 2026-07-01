@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+next-env.d.ts
+
+# Production
+build/
+dist/
+
+# Prisma / local database
+prisma/*.db
+prisma/*.db-journal
+*.sqlite
+*.sqlite3
+
+# Environment — never commit real API keys
+.env
+.env.local
+.env*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Locally-downloaded Prisma engines (env workaround; not for commit)
+.prisma-engines/
+*.tsbuildinfo

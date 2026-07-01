@@ -1,0 +1,72 @@
+// ReviewReply Pro — data model
+// SQLite via Prisma. Run: npx prisma migrate dev
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// A customer review pasted into the app, plus the settings selected for it.
+model Review {
+  id           String              @id @default(cuid())
+  reviewText   String
+  starRating   Int
+  customerName String?
+  location     String? // "Preston Hollow" | "West Village" | "Unknown"
+  serviceType  String? // "Haircut" | "Beard Trim" | ... | "Unknown"
+  staffName    String?
+  sentiment    String? // "positive" | "neutral" | "negative"
+  createdAt    DateTime            @default(now())
+
+  responses    GeneratedResponse[]
+}
+
+// One AI-generated response option (short / standard / personalized) for a review.
+model GeneratedResponse {
+  id              String   @id @default(cuid())
+  reviewId        String
+  responseText    String
+  tone            String
+  lengthType      String // "short" | "standard" | "personalized"
+  copied          Boolean  @default(false)
+  saved           Boolean  @default(false)
+  similarityScore Float    @default(0)
+  createdAt       DateTime @default(now())
+
+  review          Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId])
+}
+
+// Global brand-voice + SEO configuration. Single row (id = "default").
+model BrandSettings {
+  id               String   @id @default("default")
+  businessName     String
+  brandVoice       String
+  forbiddenPhrases String // JSON-encoded string[]
+  preferredPhrases String // JSON-encoded string[]
+  locations        String // JSON-encoded string[]
+  services         String // JSON-encoded string[]
+  seoKeywords      String // JSON-encoded string[]
+  updatedAt        DateTime @updatedAt
+}
+
+// Normalized memory of every response the user has committed to (saved/copied),
+// used for duplicate/similarity detection against future generations.
+model ResponseMemory {
+  id             String   @id @default(cuid())
+  responseText   String
+  normalizedText String
+  location       String?
+  serviceType    String?
+  tone           String?
+  starRating     Int?
+  createdAt      DateTime @default(now())
+
+  @@index([location])
+  @@index([serviceType])
+}
